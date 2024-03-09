@@ -1,15 +1,16 @@
 #include "Msg.h"
-#include "TArray.h"
 #include "User.h"
 #include "Chat.h"
 #include <iostream>
+#include <vector>
 #include "Functions.h"
 #ifdef _WIN32
 #include <Windows.h>
 #endif
 
-TArray<User> users(1); //класс пользователей на основе шаблона TArray<User>
-TArray<Msg> msgs(1); //класс сообщений на основе шаблона TArray<Msg>
+std::vector <User> users{}; //класс пользователей
+std::vector<Msg> msgs{}; //класс сообщений
+
 
 int main()
 {
@@ -20,7 +21,7 @@ int main()
     SetConsoleOutputCP(1251);
 #endif
     system("cls");
-    Chat* chat = new Chat();
+    std::unique_ptr<Chat> chat = std::make_unique<Chat>();
     bool isExit = false;
 
 
@@ -51,7 +52,7 @@ int main()
             while (true)
             {
                 std::string message;
-                chat->showMsgs(); //отоюражение всех сообщений для авторизованного пользователя
+                chat->showMsgs(); //отображение всех сообщений для авторизованного пользователя
 
                 std::string strUserTo; //для выбора Id пользователя-адресата
                 int intUserTo = 0; //Id пользователя - целое
@@ -69,7 +70,7 @@ int main()
                         rout("Кому послать (ID адресата)? (послать всем-0): ");
                         getline(std::cin, strUserTo); //ввод Id адресата
                         intUserTo = strUserTo.length() == 1 && is_number(strUserTo) ? stoi(strUserTo) : -1;
-                        if (chat->findUserNameByUserId(intUserTo) != "") break; //есть такой пользовьтель
+                        if (chat->findUserNameByUserId(intUserTo) != "") break; //есть такой пользователь
                     }
                     rout("сообщение: ");
                     getline(std::cin, message); //ввод сообщения
@@ -78,13 +79,13 @@ int main()
             }
         }
     }
+    std::cout << std::endl;
 #ifdef _WIN32
     SetConsoleCP(cp1);
     SetConsoleOutputCP(cp2);
 #endif
-    delete chat;
-    msgs.erase();
-    users.erase();
+    msgs.clear();
+    users.clear();
 
     return 0;
 }

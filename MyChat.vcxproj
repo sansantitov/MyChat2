@@ -137,7 +137,6 @@
     <ClInclude Include="Chat.h" />
     <ClInclude Include="Functions.h" />
     <ClInclude Include="Msg.h" />
-    <ClInclude Include="TArray.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>
   <ItemGroup>

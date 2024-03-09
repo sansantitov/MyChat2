@@ -6,8 +6,6 @@
 
 # Основные черты решения 
 использованием контейнеров стандартной библиотеки шаблонов \
-использование шаблонных классов \
-реализация исключений \
 поддержка кирилицы \
 регистрация нового участника или вход в уже существующую учетную запись \
 возможность обмена сообщениями в режиме личных сообщений и общего чата \
@@ -18,7 +16,7 @@
 **class Chat**\
 поиск ID пользователя по логину
 int findUserLogin(std::string login);\
-добавление пользоваьеля
+добавление пользователя
 void addUser(std::string login, std::string password, std::string name); \
 поиск ID пользователя по логину-паролю
 int findUserIdByLoginPassword(std::string login, std::string password); \
@@ -52,43 +50,18 @@ Msg(int id, int idFrom, std::string nameFrom, int idTo, std::string message); \
 void showMsg(); \
 выдача текущего времени
 std::string getTime(); \
-получение ID пользоваьеля-адресата сообщения
+получение ID пользователя-адресата сообщения
 int getIdTo(); \
 получения текста сообщения
 std::string getMessage(); 
 
 
 **class Users** \
-Класс пользователей (динамический массив) на основе шаблоного класса TArray и класса User 
+Класс пользователей на основе контейнера vector и класса User 
  
 
 **class Msgs** \
-Класс сообщений  (динамический массив) на основе шаблоного класса TArray и класса Msg
-
-**class TArray** \
-шаблон класса динамического массива
-TArray(); \
-TArray(int); \
-TArray(const TArray&);\
-~TArray();\
-void erase();\
-T& operator[](int);\
-void reallocate(int);\
-void resize(int);\
-TArray& operator=(const TArray&);\
-void insertBefore(T, int);\
-void remove(int);\
-void insertAtBeginning(T);\
-void insertAtEnd(T);\
-int getLength() const;\
-int findValue(T) const;\
-
-
-**class bad_range** \
-Дочерний класс для exception. Служит для обработки исключения выход за пределы массива
-
-**class bad_lenght** \
-Дочерний класс для exception. Служит для обработки исключения некорректного размера массива
+Класс сообщений на основе контейнера vector и класса Msg
 
 # Функции
 выдача кирилицы в терминал

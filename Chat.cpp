@@ -1,17 +1,17 @@
 #include "chat.h"
-#include "TArray.h"
+#include <vector>
 #include "User.h"
 #include "Msg.h"
 #include "Functions.h"
 
-extern TArray<User> users;
-extern TArray<Msg> msgs;
+extern std::vector<User> users;
+extern std::vector<Msg> msgs;
 
 
 
  Chat::Chat()
  {
-     users[0].setUser(0,"All","1","All users");
+     users.emplace_back(0,"All","1","All users");
      _userIdLogin = -1;
      _userIdMax = 0; //0-зарезервировано для выдачи всем
      _msgIdMax = -1;
@@ -21,7 +21,7 @@ extern TArray<Msg> msgs;
  int Chat::findUserLogin(std::string login)
  {
      int id = -1;
-     for (int i = 0; i < users.getLength(); ++i)
+     for (int i = 0; i < users.size(); ++i)
      {
          if (users[i].getLogin() == login)
          {
@@ -35,15 +35,16 @@ extern TArray<Msg> msgs;
 
  void Chat::addUser(std::string login, std::string password, std::string name)
 {
-    User* u = new User(++_userIdMax, login, password, name);
-    //if (users.getLength() == 1) users[0] = *u;
-    users.insertAtEnd(*u);
+    //User* u = new User(++_userIdMax, login, password, name);
+    std::unique_ptr<User> u = std::make_unique<User>(++_userIdMax, login, password, name);
+
+    users.push_back(*u);
 }
 
 int Chat::findUserIdByLoginPassword(std::string login, std::string password)
 {
     int id = -1;
-    for (int i = 0; i < users.getLength(); ++i)
+    for (int i = 0; i < users.size(); ++i)
     {
         if (users[i].getLogin() == login && users[i].getPsw() == password)
         {
@@ -58,7 +59,7 @@ int Chat::findUserIdByLoginPassword(std::string login, std::string password)
 std::string Chat::findUserNameByUserId(int idUser)
 {
     std::string name;
-    for (int i = 0; i < users.getLength(); ++i)
+    for (int i = 0; i < users.size(); ++i)
     {
         if (users[i].getId() == idUser)
         {
@@ -76,9 +77,9 @@ void Chat::showUsers()
 {
     rout("--- ID  Имя пользователя -----------\n");
 
-    if (users.getLength() > 1)
+    if (users.size() > 1)
     {
-        for (int i = 1; i < users.getLength(); ++i)
+        for (int i = 1; i < users.size(); ++i)
         {
             users[i].showUser();
         }
@@ -89,9 +90,10 @@ void Chat::showUsers()
 void Chat::sendMsg(int userIdTo, std::string message)
 {
     std::string userName = findUserNameByUserId(_userIdLogin);
-    Msg* m = new Msg(++_msgIdMax, _userIdLogin, userName, userIdTo, message);
-    if (msgs.getLength() == 1 && msgs[0].getMessage()=="") msgs[0] = *m;
-    else msgs.insertAtEnd(*m);
+    //Msg* m = new Msg(++_msgIdMax, _userIdLogin, userName, userIdTo, message);
+    std::unique_ptr<Msg> m = std::make_unique<Msg>(++_msgIdMax, _userIdLogin, userName, userIdTo, message);
+    //if (msgs.size() == 1 && msgs[0].getMessage()=="") msgs[0] = *m;
+    msgs.push_back(*m);
 }
 
 void Chat::showMsgs()
@@ -99,7 +101,7 @@ void Chat::showMsgs()
     std::string userName = findUserNameByUserId(_userIdLogin);
     std::cout << "******** " << userName << ": ";
     rout   ("принятые сообщения *******\n");
-    for (int i = 0; i < msgs.getLength(); ++i)
+    for (int i = 0; i < msgs.size(); ++i)
     {
         if (msgs[i].getIdTo() == 0 || msgs[i].getIdTo() == _userIdLogin) msgs[i].showMsg();
     }

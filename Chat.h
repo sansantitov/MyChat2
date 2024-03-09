@@ -6,7 +6,7 @@ class Chat
 public:
     Chat(); //конструктор
     int findUserLogin(std::string login); //поиск ID пользователя по логину
-    void addUser(std::string login, std::string password, std::string name); //добавление пользоваьеля
+    void addUser(std::string login, std::string password, std::string name); //добавление пользователя
     int findUserIdByLoginPassword(std::string login, std::string password); //поиск ID пользователя по логину-паролю
     std::string findUserNameByUserId(int idUser);  //поиск имени пользователя по ID пользователя
     void showUsers(); //отображение пользователей
